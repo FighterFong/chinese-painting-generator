@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试是否能看到源代码</title>
+    <script>
+        function clear()
+        {
+            Source = document.body.innerHTML; //获取文档的原有内容
+            document.open();                  //打开文档
+            document.write("代码已被屏蔽"); //输出提示内容
+            document.close(); //关闭文档
+            document.title = "看不到源代码"; //文档标题
+            document.body.innerHTML = Source; //重新写入就内容
+        }
+    </script>
+</head>
+<body onload= clear()>
+<marquee behavior="" direction="">测试下能否看懂源码</marquee>
+</body>
+</html>

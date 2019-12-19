@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<style>
+  ul.imglist{ margin:0 auto; width:936px; overflow:hidden} 
+  ul.imglist li{ float:left; padding:4px 8px; width:160px} 
+  ul.imglist li img{ display:block; width:160px; height:90px} 
+  ul.imglist li span{ display:block; width:100%; height:25px; line-height:25px; background:#F6F6F6} 
+/*
+  .file {
+      position: absolute;
+      left: 0;
+      width: 250px;
+      top: 0;
+      height: 28px;
+      filter: alpha(opacity=0);
+      opacity: 0;
+      cursor: pointer
+  }*/
+
+  .file_pre {
+      text-align: center;
+      /*float: right;*/
+      margin-left: 8px;
+      z-index: 1;
+      width: 66px;
+      height: 28px;
+      line-height: 28px;
+      background: url(/static/media/temp/liulan.gif) no-repeat 0 0;
+      text-indent: -9999px;
+      cursor: pointer
+  }
+
+/*  .inputstyle {
+      text-align: center;
+      border: 1px solid #BEBEBE;
+      width: 170px;
+      float: left;
+      height: 23px;
+      line-height: 23px;
+      background: #FFF;
+      z-index: 99
+  }*/
+
+
+</style>
+<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+// function fillInput(that){
+//   getElementById('pic_default').value=that.src
+// }
+
+host = window.location.host;
+host2 = document.domain; 
+protocol = window.location.protocol
+host_name = window.location.hostname
+href = window.location.href
+// alert("location:"+window.location);
+// alert("href: "+window.location.href);
+// alert("protocol: "+window.location.protocol);
+// alert("host&port: "+window.location.host);
+// alert("port: "+window.location.port);
+// alert("hostname: "+window.location.hostname);
+
+$(document).ready(function(){
+
+  $("[id=d_img]").click(function(){
+    // $("#pic_default").val(host_name);
+    $("#pic_default").val(this.src.replace(protocol+"//"+host,""));
+  });
+
+  $("#img").click(function(){
+    reload_image();
+  });
+
+  $("#sum").click(function(){
+    var a = $("#a").val();
+    var b = $("#b").val();
+
+    $.get("/chinaink/add", {'a':a,'b':b}, function(ret){
+        $('#result').html(ret)
+    });
+  });
+
+  $(".cal").click(function(){
+    // alert($("#num1").val())
+    $.ajax({
+      url: "/chinaink/cal",
+      type: "get",
+      data: {
+        "n1":$("#num1").val(),
+        "n2":$("#num2").val(),
+      },
+      success:function(data){
+        console.log(data);
+        $("#ret").val(data);
+      }
+    });
+  });
+});
+</script>
+
+</head>
+<body>
+  <h2><center>HKUST AI Painting System</center></h2><br>
+
+  <!--上传照片-->
+  <form method="post" action="/chinaink/upload" enctype="multipart/form-data" ><center>
+      {% csrf_token %}
+      <!-- <input type='text' id="imgUp" name="imgUp" placeholder="请选择图片：" value=""> -->
+<!--       <label for="upload" class="file_pre">浏览...=</label>
+      <input name="" type="text" id="viewfile" disabled="disabled" class="inputstyle"/>
+      <input type="file" style="display: none;" onchange="document.getElementById('viewfile').value=this.value;" class="file" id="upload"/><br> -->
+
+      选择自定义图片：<input type="file" name="pic" id="choose"/><br>
+      选择预设图片：<input type="text" name="pic_default" id="pic_default" ><br>
+      选择分辨率：<input type="checkbox" name="resolution" value="low">low<input type="checkbox" name="resolution" value="medium">medium<input type="checkbox" name="resolution" value="high">high<br>
+      <input type="submit" value="上传图片"></center>
+  </form><br>
+
+  <ul class="imglist"> 
+    <li>
+      <!-- 将 target 属性设置为 "_blank", 链接将在新窗口打开 -->
+      <a href="#" id="default" >
+        <img src="/static/media/default/042.jpg" id="d_img"/>
+        <span>HKUST Picture 42</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/033.jpg" id="d_img"/>
+        <span>HKUST Picture 33</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/003.jpg" id="d_img"/>
+        <span>HKUST Picture 3</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/004.jpg" id="d_img"/>
+        <span>HKUST Picture 4</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/005.jpg" id="d_img"/>
+        <span>HKUST Picture 5</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/006.jpg" id="d_img"/>
+        <span>HKUST Picture 6</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/007.jpg" id="d_img"/>
+        <span>HKUST Picture 7</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/008.jpg" id="d_img"/>
+        <span>HKUST Picture 8</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/009.jpg" id="d_img"/>
+        <span>HKUST Picture 9</span>
+      </a>
+    </li> 
+
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/010.jpg" id="d_img"/>
+        <span>HKUST Picture 10</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/012.jpg" id="d_img"/>
+        <span>HKUST Picture 12</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/014.jpg" id="d_img"/>
+        <span>HKUST Picture 14</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/015.jpg" id="d_img"/>
+        <span>HKUST Picture 15</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/016.jpg" id="d_img"/>
+        <span>HKUST Picture 16</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/020.jpg" id="d_img"/>
+        <span>HKUST Picture 20</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/021.jpg" id="d_img"/>
+        <span>HKUST Picture 21</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/022.jpg" id="d_img"/>
+        <span>HKUST Picture 22</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/023.jpg" id="d_img"/>
+        <span>HKUST Picture 23</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/024.jpg" id="d_img"/>
+        <span>HKUST Picture 24</span>
+      </a>
+    </li> 
+    <li>
+      <a href="#" id="default">
+        <img src="/static/media/default/025.jpg" id="d_img"/>
+        <span>HKUST Picture 25</span>
+      </a>
+    </li> 
+
+</ul> 
+
+
+  <!--调用摄像头，截图生成base64格式图片
+  <div class="box">
+    <video id="video" width="200" height="150"></video>
+    <canvas id="canvas"></canvas>
+  </div>
+  <button id="live">摄像</button>
+  <button id="snap">拍照</button>
+  <a id="download">download</a>
+
+  base64格式图片上传
+  <form method="post" action="/facerec/shangchuan" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type='text' id="img2" name="img2" value="">
+      <input type="submit" value="上传">
+  </form>
+
+  上传多张照片
+  <div class="container">
+      <form method="post"  id="form2" action="/chinaink/multiple" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="text" name="id" placeholder="请输入ID："><br>
+          <label>请选择10张图像文件：</label>
+          <input type="file" id="file_input" name="file_input" multiple=true/>
+          <input type="submit" value="上传">
+      </form>
+  </div>
+
+  <p>请输入两个数字</p>
+  <form action="/add/" method="get">
+      a: <input type="text" id="a" name="a"> <br>
+      b: <input type="text" id="b" name="b"> <br>
+      <p>result: <span id='result'></span></p>
+      <button type="button" id='sum'>提交</button>
+  </form>
+
+  <input type="text" id="num1">+<input type="text" id="num2">=<input type="text" id="ret"> 
+  <button class="cal">计算</button>
+  -->
+  
+</body>
+</html>

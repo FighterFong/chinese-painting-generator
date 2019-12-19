@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<style>
+  #canvas,#video {
+    float: left;
+    margin-right: 10px;
+    background: #fff;
+  }
+  .box {
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+</style>
+<script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  // $(".com_info").hide();
+  function window_reload(){
+    window.location.reload();
+  }
+
+  function reload_image(){
+    $.ajax({
+      url: "/chinaink/Captcha",
+      type: "get",
+      data: {},
+      dataType:"text",
+      success: function (data, status) {
+          // Method 1 
+          // var obj = JSON.parse(data);
+          // console.log(obj.data);
+          // 加上前缀，组装成base64格式 
+          $("#img").attr("src", "data:image/jpg;base64," + data);
+          // alert(status);
+          // console.log(status)
+          // if (obj.status==1) {
+          //   alert("entry");
+          //   $('#display').text("已绘制完毕，请赏析指正！");
+          // };
+          
+          // Method 2
+          // var obj = JSON.parse(data);
+          // console.log(obj);
+          // //上传后增加预览模式
+          // $('#preview').empty();         //清空原有相同文件
+          // var imgTag = document.createElement('img');   //创建img标签
+          // imgTag.src = obj.data;           //路径
+          // $('#preview').append(imgTag);
+      },error: function(){
+          alert("没有获取返回数据");
+      }
+    });
+  }
+
+  $("#img").click(function(){
+    reload_image();
+  });
+
+  setInterval(function(){reload_image();}, 50000);
+
+  $("#sum").click(function(){
+    var a = $("#a").val();
+    var b = $("#b").val();
+
+    $.get("/chinaink/add", {'a':a,'b':b}, function(ret){
+        $('#result').html(ret)
+    });
+  });
+
+  $(".cal").click(function(){
+    // alert($("#num1").val())
+    $.ajax({
+      url: "/chinaink/cal",
+      type: "get",
+      data: {
+        "n1":$("#num1").val(),
+        "n2":$("#num2").val(),
+      },
+      success:function(data){
+        console.log(data);
+        $("#ret").val(data);
+      }
+    });
+  });
+});
+</script>
+
+</head>
+<body>
+
+<div id="container" style="width:100%">
+
+<div id="header">
+<h2><center>HKUST AI Painting System</center></h2><br>
+<h3 id="display">上传成功，请静待AI创作结果!</h3><br></div>
+
+<div id="left" style="height:80%;width:50%;float:left;">
+<img id="content" src="{{ data }}">
+<!-- {{ data }} -->
+</div>
+
+<div id="right" style="height:80%;width:50%;float:left;">
+<img id="img" src="data:image/jpg;base64,{{ img }}" ></div>
+
+<!-- <div id="blank" style="height:200px">hhhh</div> -->
+
+<div id="footer" style="clear:both;text-align:center;">
+ © hkust social media lab</div>
+
+</div>
+
+  <!--调用摄像头，截图生成base64格式图片
+  <div class="box">
+    <video id="video" width="200" height="150"></video>
+    <canvas id="canvas"></canvas>
+  </div>
+  <button id="live">摄像</button>
+  <button id="snap">拍照</button>
+  <a id="download">download</a>
+
+  base64格式图片上传
+  <form method="post" action="/facerec/shangchuan" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type='text' id="img2" name="img2" value="">
+      <input type="submit" value="上传">
+  </form>
+
+  上传多张照片
+  <div class="container">
+      <form method="post"  id="form2" action="/chinaink/multiple" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="text" name="id" placeholder="请输入ID："><br>
+          <label>请选择10张图像文件：</label>
+          <input type="file" id="file_input" name="file_input" multiple=true/>
+          <input type="submit" value="上传">
+      </form>
+  </div>
+
+  <p>请输入两个数字</p>
+  <form action="/add/" method="get">
+      a: <input type="text" id="a" name="a"> <br>
+      b: <input type="text" id="b" name="b"> <br>
+      <p>result: <span id='result'></span></p>
+      <button type="button" id='sum'>提交</button>
+  </form>
+
+  <input type="text" id="num1">+<input type="text" id="num2">=<input type="text" id="ret"> 
+  <button class="cal">计算</button>
+  -->
+  
+</body>
+</html>
